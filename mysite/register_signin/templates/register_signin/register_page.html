@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}Register :: {{ block.super }} {% endblock %}
+
+{% block content %}
+    
+    <div class="form-panel">
+        <div class="form-panel__inner">
+            <div class="switch-forms">
+                <button type="button" class="switch_btn switch_btn-active" form="register-form">Register</button>
+                <button type="button" class="switch_btn" form="signin-form">Sign in</button>
+            </div>
+
+            <div class="form">
+                <div class="form-content">
+
+                        <!-- register form -->
+                    
+                        <form id="register-form" action="" method="POST" class="form form-register">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="">Username<span class="req">*</span></label>
+                                <input type="text" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Email<span class="req">*</span></label>
+                                <input type="text">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Password<span class="req">*</span></label>
+                                <input type="text">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Password confirmation<span class="req">*</span></label>
+                                <input type="text">
+                            </div>
+                            <button class="form-button" type="button" value="registration">Register</button>
+                        </form>
+                        
+                        <!-- sign in form -->
+
+                        <form id="signin-form" action="" method="POST" class="form form-sign_in" value="sign_in">
+                            <div class="form-group">
+                                <label for="">Username<span class="req">*</span></label>
+                                <input type="text">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Password<span class="req">*</span></label>
+                                <input type="text">
+                            </div>
+                            <button class="form-button" type="button" value="registration">Sign in</button>
+                        </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+
+{% block scripts %}
+    <script src="{% static 'register_signin/js/register_signin_switch.js' %}"></script>
+    <script src="{% static 'register_signin/js/form_labels.js' %}"></script>
+{% endblock scripts %}
