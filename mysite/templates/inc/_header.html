@@ -2,7 +2,14 @@
     <div class="container">
         <div class="header__inner">
             <a href="{% url 'home' %}" class="logo">Comics<span class="logo-hub">Hub</span></a>
-            <div class="reg__sign"><a href="{% url 'register' %}" class="reg__sign-btn">Register / Sign in</a></div>
+            {% if request.user.is_authenticated %}
+            <ui class="header-links">
+                <li class="header-link"><a href="#" class="profile-link">{{ user.username }}</span></a></li>
+                <li class="header-link"><a href="#" class="profile-link">Exit</span></a></li>
+            </ui>
+            {% else %}
+            <div class="reg__sign"><a href="{% url 'authentication' %}" class="reg__sign-btn">Register / Sign in</a></div>
+            {% endif %}
         </div>
     </div>
 </header>

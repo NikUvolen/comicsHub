@@ -58,6 +58,25 @@ body {
     font-size: 28px;
 }
 
+.header-links {
+    list-style-type: none;
+    display: flex;
+}
+
+.header-link {
+    margin-left: 20px;
+}
+
+.profile-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 400;
+}
+
+.profile-link:hover {
+    text-decoration: underline;
+}
+
 .reg__sign {
     font-size: 18px;
     font-weight: 600;
