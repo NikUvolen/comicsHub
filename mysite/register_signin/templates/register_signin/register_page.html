@@ -22,39 +22,54 @@
                             {% csrf_token %}
                             <div class="form-group">
                                 <label for="">Username<span class="req">*</span></label>
-                                <input type="text" required>
+                                {{ registration_form.username }}
                             </div>
                             <div class="form-group">
                                 <label for="">Email<span class="req">*</span></label>
-                                <input type="text">
+                                {{ registration_form.email }}
                             </div>
                             <div class="form-group">
                                 <label for="">Password<span class="req">*</span></label>
-                                <input type="text">
+                                {{ registration_form.password1 }}
                             </div>
                             <div class="form-group">
                                 <label for="">Password confirmation<span class="req">*</span></label>
-                                <input type="text">
+                                {{ registration_form.password2 }}
                             </div>
-                            <button class="form-button" type="submit" value="registration">Register</button>
+                            <button class="form-button" type="submit" name="submit" value="registration">Register</button>
                         </form>
                         
                         <!-- sign in form -->
 
                         <form id="signin-form" action="" method="POST" class="form form-sign_in" value="sign_in">
+                            {% csrf_token %}
                             <div class="form-group">
-                                <label for="">Username<span class="req">*</span></label>
-                                <input type="text">
+                                <label for="" class="label-form">Username<span class="req">*</span></label>
+                                {{ sign_in_form.username }}
                             </div>
                             <div class="form-group">
-                                <label for="">Password<span class="req">*</span></label>
-                                <input type="text">
+                                <label for="" class="label-form">Password<span class="req">*</span></label>
+                                {{ sign_in_form.password }}
                             </div>
-                            <button class="form-button" type="submit" value="sign_in">Sign in</button>
+                            <button class="form-button" type="submit" name="submit" value="sign_in">Sign in</button>
                         </form>
                 </div>
             </div>
         </div>
+
+        {% if sign_in_form.errors.items %}
+        <div class="form-error__panel active">
+            {% if form.non_field_errors %}
+				{% for error in form.non_field_errors %}
+					<span class="error-message">- {{ error }}</span>
+				{% endfor %}
+		    {% endif %}
+        
+            {% for key, value in sign_in_form.errors.items %}
+                {{ value }}
+            {% endfor %}
+        </div>
+        {% endif %}
     </div>
 {% endblock content %}
 

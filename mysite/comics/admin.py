@@ -12,7 +12,7 @@ class ImagesAdmin(admin.ModelAdmin):
 
 
 class CommentsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'path', 'author_id')
+    list_display = ('id', 'author_id')
 
 
 admin.site.register(Comments, CommentsAdmin)

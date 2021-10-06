@@ -22,14 +22,25 @@ class Comics(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    author_id = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+
+    images = models.ForeignKey('Images', on_delete=models.CASCADE)
+    comments = models.ForeignKey('Comments', on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return self.title
+
+    # def get_absolute_url(self):
+    #     return reverse()
+
 
 class Images(models.Model):
     class Meta:
         verbose_name = 'Images'
         verbose_name_plural = 'Image'
 
-    comics_id = models.ForeignKey(Comics, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to=user_directory_path)
+    preview_image = models.ImageField(upload_to=user_directory_path)
+    image = models.ImageField(null=True, blank=True)
 
 
 class Comments(models.Model):
@@ -38,8 +49,7 @@ class Comments(models.Model):
         verbose_name_plural = 'Comment'
         ordering = ['-created_at']
 
-    path = ArrayField(models.IntegerField(), default=list)
-    comics_id = models.ForeignKey(Comics, on_delete=models.CASCADE)
+    # path = ArrayField(models.IntegerField(), default=list)
     author_id = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)

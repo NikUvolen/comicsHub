@@ -9,6 +9,10 @@ class UserRegistrationForm(UserCreationForm):
     password2 = forms.CharField(label='Confirm password', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control'}))
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({'autofocus': False})
+
     def is_valid(self):
         result = super().is_valid()
         for x in self.fields:

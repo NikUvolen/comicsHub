@@ -1,11 +1,13 @@
+{% url 'home' as home_url %}
+
 <header id="header">
     <div class="container">
         <div class="header__inner">
-            <a href="{% url 'home' %}" class="logo">Comics<span class="logo-hub">Hub</span></a>
+            <a href="{{ home_url }}" class="logo">Comics<span class="logo-hub">Hub</span></a>
             {% if request.user.is_authenticated %}
             <ui class="header-links">
                 <li class="header-link"><a href="#" class="profile-link">{{ user.username }}</span></a></li>
-                <li class="header-link"><a href="#" class="profile-link">Exit</span></a></li>
+                <li class="header-link"><a href="{% url 'logout' %}" class="profile-link">Exit</span></a></li>
             </ui>
             {% else %}
             <div class="reg__sign"><a href="{% url 'authentication' %}" class="reg__sign-btn">Register / Sign in</a></div>

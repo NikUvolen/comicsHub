@@ -1,25 +1,25 @@
 from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect
 
-from .forms import UserRegistrationForm, UserCreationForm
+from .forms import UserRegistrationForm, UserLoginForm
 
 
 def authentication(request):
-    def valid_form(form, redirect_path_name):
-        if form.is_valid():
-            form.save()
-            return redirect(redirect_path_name)
-
     if request.method == "POST":
-        if request.POST.get('submit') == 'sign_in':
-            registration_form = UserRegistrationForm(request.POST)
-            valid_form(registration_form, 'authenticate')
-        elif request.POST.get('submit') == 'registration':
-            sign_in_form = UserCreationForm(request.POST)
-            valid_form(sign_in_form, 'home')
+        registration_form = UserRegistrationForm(request.POST)
+        sign_in_form = UserLoginForm(data=request.POST)
+        if request.POST.get('submit') == 'registration':
+            if registration_form.is_valid():
+                registration_form.save()
+                return redirect('authentication')
+        elif request.POST.get('submit') == 'sign_in':
+            if sign_in_form.is_valid():
+                user = sign_in_form.get_user()
+                login(request, user)
+                return redirect('home')
     else:
         registration_form = UserRegistrationForm()
-        sign_in_form = UserCreationForm()
+        sign_in_form = UserLoginForm()
 
     context = {
         'registration_form': registration_form,
@@ -31,4 +31,4 @@ def authentication(request):
 
 def user_logout(request):
     logout(request)
-    return redirect('authenticate')
+    return redirect('authentication')
