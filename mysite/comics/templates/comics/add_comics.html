@@ -1,0 +1,6 @@
+<form action="" enctype="multipart/form-data" method="POST">
+    {% csrf_token %}
+    {{ comics_form.as_p }}
+
+    <button type="submit">Add</button>
+</form>

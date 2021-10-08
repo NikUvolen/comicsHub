@@ -77,6 +77,11 @@ body {
     text-decoration: underline;
 }
 
+.add-comics {
+    margin-right: 60px;
+    color: #1ab188;
+}
+
 .reg__sign {
     font-size: 18px;
     font-weight: 600;

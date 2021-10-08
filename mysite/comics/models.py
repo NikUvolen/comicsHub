@@ -1,11 +1,16 @@
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
+from django.template.defaultfilters import escape
+from django.utils.safestring import mark_safe
+from django.urls import reverse
 from django.db import models
 
 
 def user_directory_path(instance, filename):
-    return f'user_{instance.user.id}/{filename}'
+    return f'{filename}'
 
+
+# TODO: Переписать нормально модели
 
 class Comics(models.Model):
     class Meta:
@@ -24,9 +29,6 @@ class Comics(models.Model):
 
     author_id = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
-    images = models.ForeignKey('Images', on_delete=models.CASCADE)
-    comments = models.ForeignKey('Comments', on_delete=models.CASCADE, null=True)
-
     def __str__(self):
         return self.title
 
@@ -39,8 +41,16 @@ class Images(models.Model):
         verbose_name = 'Images'
         verbose_name_plural = 'Image'
 
+    comics_id = models.ForeignKey(Comics, on_delete=models.CASCADE, default=Comics)
+    # TODO: перенести preview_image в модель Comics
     preview_image = models.ImageField(upload_to=user_directory_path)
     image = models.ImageField(null=True, blank=True)
+
+    def comics_link(self):
+        return mark_safe(
+            f'<a href="http://127.0.0.1:8000/admin/comics/comics/{self.comics_id.pk}/change/">'
+            f'{escape(self.comics_id)}'
+            f'</a>')
 
 
 class Comments(models.Model):
@@ -51,6 +61,7 @@ class Comments(models.Model):
 
     # path = ArrayField(models.IntegerField(), default=list)
     author_id = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    comics_id = models.ForeignKey(Comics, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
