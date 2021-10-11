@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 from django.template.defaultfilters import escape
 from django.utils.safestring import mark_safe
+from django.core.validators import FileExtensionValidator
 from django.urls import reverse
 from django.db import models
 
@@ -27,13 +28,18 @@ class Comics(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    preview_image = models.ImageField(upload_to='photos/',
+                                      blank=False,
+                                      null=False,
+                                      validators=[FileExtensionValidator(allowed_extensions=['gif'])])
+
     author_id = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.title
 
-    # def get_absolute_url(self):
-    #     return reverse()
+    def get_absolute_url(self):
+        return reverse('view_comics', kwargs={'comics_id': self.pk})
 
 
 class Images(models.Model):
@@ -42,8 +48,6 @@ class Images(models.Model):
         verbose_name_plural = 'Image'
 
     comics_id = models.ForeignKey(Comics, on_delete=models.CASCADE, default=Comics)
-    # TODO: перенести preview_image в модель Comics
-    preview_image = models.ImageField(upload_to=user_directory_path)
     image = models.ImageField(null=True, blank=True)
 
     def comics_link(self):

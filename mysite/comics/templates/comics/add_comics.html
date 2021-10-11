@@ -1,6 +1,24 @@
-<form action="" enctype="multipart/form-data" method="POST">
-    {% csrf_token %}
-    {{ comics_form.as_p }}
+{% extends 'base.html' %}
+{% load static %}
 
-    <button type="submit">Add</button>
-</form>
+
+{% block content %}
+<div class="form-panel">
+    <form action="" enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="">Title</label>
+            {{ comics_form.title }}
+        </div>
+        <div class="form-group">
+            <label for="">Description</label>
+            {{ comics_form.description }}
+        </div>
+        {{ comics_form.is_complete }}
+        {{ comics_form.preview_image }}
+
+        <button class="form-button" type="submit">Add</button>
+    </form>
+</div>
+{% endblock content %}

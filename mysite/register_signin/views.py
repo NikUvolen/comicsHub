@@ -2,8 +2,10 @@ from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect
 
 from .forms import UserRegistrationForm, UserLoginForm
+from mysite.decorators import anonymous_required
 
 
+@anonymous_required(redirect_url='/')
 def authentication(request):
     if request.method == "POST":
         registration_form = UserRegistrationForm(request.POST)
