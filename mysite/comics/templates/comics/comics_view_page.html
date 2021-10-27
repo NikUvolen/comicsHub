@@ -7,7 +7,8 @@
     <div class="card-rows">
         {% for item in comics %}
             <div class="card">
-                <div class="card-img" style="background-image: url( {{ item.preview_image }} );"></div>
+                {% comment %} <div class="card-img" style="background-image: url( {{ item.preview_image }} );"></div> {% endcomment %}
+                <img class="card-img" src="{{ item.preview_image }}" alt="">
                 <div class="content">
                     <h3>{{ item.title }}</h3>
                     <p>

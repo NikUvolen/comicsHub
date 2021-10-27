@@ -37,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'comics.apps.ComicsConfig',
     'debug_toolbar',
+    'comics.apps.ComicsConfig',
     'register_signin.apps.RegisterSinginConfig'
 ]
 

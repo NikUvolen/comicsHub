@@ -27,6 +27,13 @@ body {
 
 /* === Header === */
 
+#header {
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+}
+
 .header__inner {
     display: flex;
     position: relative;
@@ -64,7 +71,11 @@ body {
 }
 
 .header-link {
-    margin-left: 20px;
+    margin-left: 30px;
+    display: flex;
+    align-items: center;
+
+    position: relative;
 }
 
 .profile-link {
@@ -77,8 +88,81 @@ body {
     text-decoration: underline;
 }
 
+.TopNavBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.TopNavBtn__profileLink {
+    padding: 5px 10px;
+    
+    cursor: pointer;
+    color: white;
+    text-decoration: none;
+}
+
+.TopNavBtn__profileLink:hover {
+    background-color: rgb(39, 39, 39);
+}
+
+.TopNavBtn__profileLink.active {
+    background-color: rgb(39, 39, 39);
+}
+
+.top_profile_link-arrow {
+    margin-left: 7px;
+    color: white;
+}
+
+#top_profile_menu {
+    position: absolute;
+    transition: transform 100ms linear, opacity 100ms linear, visibility 100ms linear;
+}
+
+.top_profile_menu {
+    display: flex;
+    flex-direction: column;
+    top: calc(100% + 10px);
+    right: 0;
+    padding: 15px 0;
+
+    background-color: #292929;
+    width: 100%;
+    min-width: 206px;
+    max-width: 240px;
+    z-index: 800;
+
+    opacity: 0;
+    visibility: hidden;
+}
+
+.top_profile_menu.show {
+    transform: translateY(-10px);
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+}
+
+.top_profile_menu-link {
+    padding: 0 15px;
+    color: white;
+
+    font-size: .9em;
+    text-decoration: none;
+}
+
+.top_profile_menu-link:hover {
+    background-color: #3b3b3b;
+}
+
+.profile-avatar {
+    margin-left: 10px;
+    border-radius: 50%;
+}
+
 .add-comics {
-    margin-right: 60px;
+    margin-right: 40px;
     color: #1ab188;
 }
 
@@ -131,10 +215,16 @@ body {
     overflow: hidden;
 
     border: 2px white solid;
+
+    transition: border .2s linear;
 }
 
 .card:nth-child(4) {
     margin-right: 0;
+}
+
+.card:hover {
+    border: 4px white solid;
 }
 
 .content {
@@ -160,10 +250,9 @@ body {
 }
 
 .card-img {
+    width: 100%;
     height: 100%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+    object-fit: cover;
 
     transition: opacity .5s linear,
                 filter .5s linear;
