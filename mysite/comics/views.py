@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 
 from .forms import AddComicsForm
-from .models import Comics
+from .models import Comics, Ip
 
 
 # def comics_view_page(request):
@@ -31,6 +31,20 @@ class ViewComicsDetail(DetailView):
     template_name = 'comics/comics_detail_view_page.html'
     pk_url_kwarg = 'comics_id'
     context_object_name = 'comics'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        comics = Comics.objects.get(pk=kwargs['object'].pk)
+        ip = get_client_ip(self.request)
+
+        if Ip.objects.filter(ip=ip).exists():
+            comics.views.add(Ip.objects.get(ip=ip))
+        else:
+            Ip.objects.create(ip=ip)
+            comics.views.add(Ip.objects.get(ip=ip))
+
+        context['comics'] = comics
+        return context
 
 
 # Todo: https://ru.stackoverflow.com/questions/1233137/django-Как-реализовать-счетчик-просмотров-БЕЗ-НАКРУТКИ

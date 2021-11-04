@@ -32,4 +32,3 @@ class CommentsAdmin(admin.ModelAdmin):
 admin.site.register(Comments, CommentsAdmin)
 admin.site.register(Images, ImagesAdmin)
 admin.site.register(Comics, ComicsAdmin)
-admin.site.register(Ip)

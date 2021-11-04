@@ -46,6 +46,9 @@ class Comics(models.Model):
     def __str__(self):
         return self.title
 
+    def total_views(self):
+        return self.views.count()
+
     def get_absolute_url(self):
         return reverse('view_comics', kwargs={'comics_id': self.pk})
 
