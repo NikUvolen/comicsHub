@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/comicsHub.iml" filepath="$PROJECT_DIR$/.idea/comicsHub.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/comicsHub_old.iml" filepath="$PROJECT_DIR$/.idea/comicsHub_old.iml" />
     </modules>
   </component>
 </project>

@@ -5,10 +5,9 @@
 {% block content %}
     <h1 class="card-title">New comics</h1>
     <div class="card-rows">
-        {% for item in comics %}
+        {% for item in comics_page_obj %}
             <div class="card">
-                {% comment %} <div class="card-img" style="background-image: url( {{ item.preview_image }} );"></div> {% endcomment %}
-                <img class="card-img" src="{{ item.preview_image }}" alt="">
+                <img class="card-img" src="{{ item.preview_image.url }}" alt="">
                 <div class="content">
                     <h3>{{ item.title }}</h3>
                     <p>
@@ -19,5 +18,20 @@
                 </div>
             </div>
         {% endfor %}
+    </div>
+    <div>
+        {% if comics_page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ comics_page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ comics_page_obj.number }} of {{ comics_page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if comics_page_obj.has_next %}
+            <a href="?page={{ comics_page_obj.next_page_number }}">next</a>
+            <a href="?page={{ comics_page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
     </div>
 {% endblock content %}

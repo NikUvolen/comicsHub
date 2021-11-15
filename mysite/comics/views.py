@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 
@@ -20,21 +21,31 @@ def get_client_ip(request):
 class HomeViewComics(ListView):
     model = Comics
     template_name = 'comics/comics_view_page.html'
-    context_object_name = 'comics'
 
     def get_queryset(self):
         return Comics.objects.filter(is_complete=True)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        comics = Comics.objects.prefetch_related('views').all()
+
+        paginator = Paginator(comics, 4)
+        comics_page_number = self.request.GET.get('page')
+        comics_page_obj = paginator.get_page(comics_page_number)
+
+        context['comics_page_obj'] = comics_page_obj
+        return context
 
 
 class ViewComicsDetail(DetailView):
     model = Comics
     template_name = 'comics/comics_detail_view_page.html'
-    pk_url_kwarg = 'comics_id'
+    slug_url_kwarg = 'comics_slug'
     context_object_name = 'comics'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        comics = Comics.objects.get(pk=kwargs['object'].pk)
+        comics = Comics.objects.prefetch_related('images_set').get(pk=kwargs['object'].pk)
         ip = get_client_ip(self.request)
 
         if Ip.objects.filter(ip=ip).exists():

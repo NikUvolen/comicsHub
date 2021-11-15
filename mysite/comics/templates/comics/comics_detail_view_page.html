@@ -10,4 +10,8 @@
 <p>
     {{ comics.total_views }} views
 </p>
+
+{% for img in comics.images_set.all %}
+    <img src="{{ img.image.url }}" width="800">
+{% endfor %}
 {% endblock content %}

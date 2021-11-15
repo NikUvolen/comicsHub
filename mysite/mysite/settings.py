@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
     'comics.apps.ComicsConfig',
-    'register_signin.apps.RegisterSinginConfig'
+    'register_signin.apps.RegisterSinginConfig',
+    'user_profiles.apps.UserProfilesConfig'
 ]
 
 MIDDLEWARE = [
@@ -54,6 +55,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'mysite.urls'
+
+APPEND_SLASH = True
 
 TEMPLATES = [
     {

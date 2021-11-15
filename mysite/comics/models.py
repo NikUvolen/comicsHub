@@ -1,10 +1,15 @@
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.fields import ArrayField
 from django.template.defaultfilters import escape
 from django.utils.safestring import mark_safe
 from django.core.validators import FileExtensionValidator
+from autoslug import AutoSlugField
 from django.urls import reverse
 from django.db import models
+
+from utils import upload_function
 
 
 def user_directory_path(instance, filename):
@@ -27,19 +32,19 @@ class Comics(models.Model):
         ordering = ['-created_at']
 
     title = models.CharField(max_length=150)
+    slug = AutoSlugField(populate_from='title', max_length=255, unique=True, db_index=True, verbose_name='URL')
     description = models.TextField(blank=True)
     is_complete = models.BooleanField(default=False)
-    # views = models.IntegerField(default=0)
     views = models.ManyToManyField(Ip, related_name="post_views", blank=True)
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    preview_image = models.ImageField(upload_to='photos/',
+    preview_image = models.ImageField(upload_to=upload_function,
                                       blank=False,
                                       null=False,
-                                      validators=[FileExtensionValidator(allowed_extensions=['gif'])])
+                                      validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg'])])
 
     author_id = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
@@ -50,7 +55,7 @@ class Comics(models.Model):
         return self.views.count()
 
     def get_absolute_url(self):
-        return reverse('view_comics', kwargs={'comics_id': self.pk})
+        return reverse('view_comics', kwargs={'comics_slug': self.slug})
 
 
 class Images(models.Model):
@@ -61,11 +66,12 @@ class Images(models.Model):
     comics_id = models.ForeignKey(Comics, on_delete=models.CASCADE, default=Comics)
     image = models.ImageField(null=True, blank=True)
 
-    def comics_link(self):
-        return mark_safe(
-            f'<a href="http://127.0.0.1:8000/admin/comics/comics/{self.comics_id.pk}/change/">'
-            f'{escape(self.comics_id)}'
-            f'</a>')
+    def image_url(self):
+        return mark_safe(f'<img src="{self.image.url}" width="auto" height="200">')
+
+    class Meta:
+        verbose_name = 'Изображение'
+        verbose_name_plural = 'Изображения'
 
 
 class Comments(models.Model):
